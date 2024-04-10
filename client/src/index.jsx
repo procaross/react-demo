@@ -1,35 +1,37 @@
 import React from "react";
-import * as ReactDOMClient from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NotFound from "./components/NotFound";
-import Home from "./components/Home";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
-import { AuthTokenProvider } from "./AuthTokenContext";
 
-const container = document.getElementById("root");
-const root = ReactDOMClient.createRoot(container);
+const onRedirectCallback = (appState) => {
+  window.history.replaceState(
+    {},
+    document.title,
+    appState?.returnTo || window.location.pathname
+  );
+};
 
-const requestedScopes = ["profile", "email"];
+const providerConfig = {
+  domain: process.env.REACT_APP_AUTH0_DOMAIN,
+  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+  },
+  cacheLocation: "localstorage",
+  onRedirectCallback: onRedirectCallback
+};
 
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <Auth0Provider
-      domain={process.env.REACT_APP_AUTH0_DOMAIN}
-      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-      authorizationParams={{
-        redirect_uri: `${window.location.origin}/verify-user`,
-        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
-        scope: requestedScopes.join(" "),
-      }}
-    >
-      <AuthTokenProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthTokenProvider>
-    </Auth0Provider>
-  </React.StrictMode>
+    <BrowserRouter>
+      <Auth0Provider
+        {...providerConfig}
+      >
+        <App />
+      </Auth0Provider>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
