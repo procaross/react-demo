@@ -30,76 +30,63 @@ app.get("/ping", (req, res) => {
 
 const { User } = prisma;
 
-// POST /users
-app.post("/users", requireAuth, async (req, res) => {
+app.post("/users/auth", async (req, res) => {
   try {
-    const { email, name, address } = req.body;
-    const newUser = await User.create({
-      data: {
-        email,
-        name,
-        address: {
-          create: address
-        }
-      }
-    });
-    res.json(newUser);
+    const {
+      given_name,
+      family_name,
+      nickname,
+      name,
+      picture,
+      locale,
+      updated_at,
+      email,
+      email_verified,
+      sub,
+    } = req.body;
+
+    const existingUser = await User.findUnique({ where: { email } });
+
+    if (existingUser) {
+      res.json(existingUser);
+    } else {
+      const newUser = await User.create({
+        data: {
+          email,
+          givenName: given_name,
+          familyName: family_name,
+          nickname,
+          locale,
+          emailVerified: email_verified,
+          updatedAt: new Date(updated_at),
+          sub,
+        },
+      });
+      res.json(newUser);
+    }
   } catch (err) {
     res.status(400).json({ error: err.message });
-  }
-});
-
-app.get("/users", requireAuth, async (req, res) => {
-  try {
-    const users = await User.findMany({
-      include: {
-        address: true
-      }
-    });
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.get("/users/:id", requireAuth, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findUnique({
-      where: { id },
-      include: {
-        address: true,
-        posts: true
-      }
-    });
-    res.json(user);
-  } catch (err) {
-    res.status(404).json({ error: err.message });
   }
 });
 
 app.put("/users/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
-    const { email, name, address } = req.body;
+    const { givenName, familyName, nickname } = req.body;
     const updatedUser = await User.update({
       where: { id },
       data: {
-        email,
-        name,
-        address: {
-          upsert: {
-            create: address,
-            update: address
-          }
-        }
-      }
+        givenName,
+        familyName,
+        nickname,
+      },
     });
     res.json(updatedUser);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 app.listen(8000, () => {
   console.log("Server running on http://localhost:8000 🎉 🚀");

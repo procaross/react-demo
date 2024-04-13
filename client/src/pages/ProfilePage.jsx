@@ -1,9 +1,27 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
+import React, {useEffect} from "react";
 import { PageLayout } from "../components/PageLayout";
 
 export const ProfilePage = () => {
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const getMessage = async () => {
+      const accessToken = await getAccessTokenSilently();
+      console.log(accessToken)
+      if (!isMounted) {
+        return;
+      }
+    };
+
+    getMessage();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [getAccessTokenSilently]);
 
   if (!user) {
     return null;
