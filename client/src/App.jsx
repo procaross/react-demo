@@ -1,31 +1,35 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import ProfilePage from "./pages/ProfilePage";
-import DetailsPage from "./pages/DetailsPage";
+import { PageLoader } from "./components/PageLoader";
+import { AuthenticationGuard } from "./components/AuthenticationGuard";
+import { CallbackPage } from "./pages/CallbackPage";
+import { HomePage } from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { ProfilePage } from "./pages/ProfilePage";
+import { SearchPage } from "./pages/SearchPage";
 
-function App() {
+export const App = () => {
+  const { isLoading } = useAuth0();
+
+  if (isLoading) {
+    return (
+      <div className="page-layout">
+        <PageLoader />
+      </div>
+    );
+  }
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
       <Route
         path="/profile"
-        element={
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        }
+        element={<AuthenticationGuard component={ProfilePage} />}
       />
-      <Route path="/details/:id" element={<DetailsPage />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/callback" element={<CallbackPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
-}
-
-export default App;
+};

@@ -1,39 +1,19 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { App } from './App'
+import { Auth0ProviderWithNavigate } from "./auth0-provider-with-navigate";
+import "./styles/styles.css";
 
-const onRedirectCallback = (appState) => {
-  window.history.replaceState(
-    {},
-    document.title,
-    appState?.returnTo || window.location.pathname
-  );
-};
+const container = document.getElementById("root");
+const root = createRoot(container);
 
-const providerConfig = {
-  domain: process.env.REACT_APP_AUTH0_DOMAIN,
-  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  authorizationParams: {
-    redirect_uri: window.location.origin,
-    audience: process.env.REACT_APP_AUTH0_AUDIENCE,
-  },
-
-  cacheLocation: "localstorage",
-  onRedirectCallback: onRedirectCallback
-};
-
-ReactDOM.render(
+root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Auth0Provider
-        {...providerConfig}
-      >
+      <Auth0ProviderWithNavigate>
         <App />
-      </Auth0Provider>
+      </Auth0ProviderWithNavigate>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
