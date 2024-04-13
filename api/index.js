@@ -5,6 +5,7 @@ import pkg from "@prisma/client";
 import morgan from "morgan";
 import cors from "cors";
 import { auth } from "express-oauth2-jwt-bearer";
+import axios from 'axios'
 
 // this is a middleware that will validate the access token sent by the client
 const requireAuth = auth({
@@ -27,6 +28,45 @@ const prisma = new PrismaClient();
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
+
+app.get('/detail/:movieId', async (req, res) => {
+  try {
+    const movieId = req.params.movieId;
+
+    let movie = await prisma.movie.findUnique({ where: { movieId } });
+
+    if (!movie) {
+      const options = {
+        method: 'GET',
+        url: `https://moviesdatabase.p.rapidapi.com/titles/${movieId}`,
+        headers: {
+          'X-RapidAPI-Key': 'a2243b4875msha2e1ea67bcd72ecp18279ejsn4e35862a83e9',
+          'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+        }
+      };
+
+      const response = await axios.request(options);
+      const movieData = response.data.results;
+
+      movie = await prisma.movie.create({
+        data: {
+          movieId: movieData.id,
+          title: movieData.titleText.text,
+          originalTitle: movieData.originalTitleText.text,
+          releaseYear: movieData.releaseYear.year,
+          releaseDate: new Date(movieData.releaseDate.year, movieData.releaseDate.month - 1, movieData.releaseDate.day),
+          primaryImage: movieData.primaryImage.url
+        }
+      });
+    }
+
+    res.json(movie);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
 
 const { User } = prisma;
 
