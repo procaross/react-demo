@@ -232,6 +232,45 @@ app.delete('/favorites', requireAuth, async (req, res) => {
   }
 });
 
+app.get('/movie/:id', async (req, res) => {
+  const movieId = req.params.id;
+
+  try {
+    let movie = await prisma.movie.findUnique({
+      where: { movieId: movieId }
+    });
+
+    if (!movie) {
+      const options = {
+        method: 'GET',
+        url: `https://moviesdatabase.p.rapidapi.com/titles/${movieId}`,
+        headers: {
+          'X-RapidAPI-Key': 'a2243b4875msha2e1ea67bcd72ecp18279ejsn4e35862a83e9',
+          'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+        }
+      };
+
+      const response = await axios.request(options);
+      const movieData = response.data.results;
+
+      movie = await prisma.movie.create({
+        data: {
+          movieId: movieData.id,
+          title: movieData.titleText.text,
+          originalTitle: movieData.originalTitleText.text,
+          releaseYear: movieData.releaseYear.year,
+          primaryImage: movieData.primaryImage?.url
+        }
+      });
+    }
+
+    res.json(movie);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching the movie details.' });
+  }
+});
+
 
 app.listen(8000, () => {
   console.log("Server running on http://localhost:8000 🎉 🚀");
