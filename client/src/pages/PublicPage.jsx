@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
+import FavButton from "../components/FavButton";
+import FavList from "../components/favList";
 
 export const PublicPage = () => {
   const [movies, setMovies] = useState([]);
@@ -14,7 +16,7 @@ export const PublicPage = () => {
       if (entries[0].isIntersecting && hasMore) {
         setPage(prevPageNumber => prevPageNumber + 1);
       }
-    })
+    });
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
 
@@ -35,13 +37,8 @@ export const PublicPage = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [page]);
-
-  const handleMovieClick = (movie) => {
-    alert(`You clicked ${movie.titleText.text}`);
-  };
 
   const gridStyle = {
     display: 'grid',
@@ -51,57 +48,42 @@ export const PublicPage = () => {
   };
 
   const itemStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'column',
     cursor: 'pointer',
-    border: '1px solid #ccc',
+    border: '1px solid #555',
+    borderRadius: '0.8rem',
     padding: '20px',
     boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
     transition: 'transform 0.2s'
   };
 
   return (
-    <div className="content-layout" id="movie-exploration" style={{ padding: '20px' }}>
-      <h1 id="page-title" className="content__title">Movie List</h1>
-      <div className="content__body">
-        <div style={gridStyle}>
-          {movies.map((movie, index) => {
-            if (movies.length === index + 1) {
-              return (
-                <div ref={lastMovieElementRef}
-                     key={movie._id}
-                     style={itemStyle}
-                     onClick={() => handleMovieClick(movie)}>
-                  <h3 style={{color: 'white'}}>{movie.titleText.text}</h3>
-                  <p>{movie.releaseYear.year}</p>
-                  {movie.primaryImage && (
-                    <img
-                      src={movie.primaryImage.url}
-                      alt={movie.primaryImage.caption.plainText}
-                      style={{ width: '100%', height: 'auto' }}
-                    />
-                  )}
-                </div>
-              );
-            } else {
-              return (
-                <div key={movie._id}
-                     style={itemStyle}
-                     onClick={() => handleMovieClick(movie)}>
-                  <h3 style={{color: 'white'}}>{movie.titleText.text}</h3>
-                  <p>{movie.releaseYear.year}</p>
-                  {movie.primaryImage && (
-                    <img
-                      src={movie.primaryImage.url}
-                      alt={movie.primaryImage.caption.plainText}
-                      style={{ width: '100%', height: 'auto' }}
-                    />
-                  )}
-                </div>
-              );
-            }
-          })}
-        </div>
-        {loading && <p style={{color: 'white'}}>Loading more movies...</p>}
+    <div className="content-layout" style={{ padding: '20px' }}>
+      <FavList />
+      <h1 style={{color: 'white'}}>Movie List</h1>
+      <div style={gridStyle}>
+        {movies.map((movie, index) => (
+          <div style={itemStyle} ref={index === movies.length - 1 ? lastMovieElementRef : null}>
+            <a href={`/movie/${movie.id}`} key={movie._id} style={{textDecoration: 'none', color: 'inherit'}}>
+              <h3 style={{color: 'white'}}>{movie.titleText.text}</h3>
+              <p style={{color: 'white'}}>{movie.releaseYear.year}</p>
+              {movie.primaryImage && (
+                <img
+                  src={movie.primaryImage.url}
+                  alt={movie.primaryImage.caption.plainText}
+                  style={{width: '100%', height: 'auto'}}
+                />
+              )}
+            </a>
+            <FavButton movieId={movie.id} onClick={(e) => e.stopPropagation()}/>
+          </div>
+
+          ))}
       </div>
+      {loading && <p>Loading more movies...</p>}
     </div>
   );
 };

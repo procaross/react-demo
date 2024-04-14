@@ -232,6 +232,31 @@ app.delete('/favorites', requireAuth, async (req, res) => {
   }
 });
 
+app.get('/isFavorite', requireAuth, async (req, res) => {
+  const userId = req.query.userId;
+  const movieId = req.query.movieId;
+
+  if (!userId || !movieId) {
+    return res.status(400).json({ error: 'Missing userId or movieId' });
+  }
+
+  try {
+    const favorite = await prisma.favorite.findUnique({
+      where: {
+        userId_movieId: {
+          userId,
+          movieId,
+        },
+      },
+    });
+
+    res.json({ isFavorite: !!favorite });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while checking the favorite status' });
+  }
+});
+
 app.get('/movie/:id', async (req, res) => {
   const movieId = req.params.id;
 

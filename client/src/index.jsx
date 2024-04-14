@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from './App'
 import { Auth0ProviderWithNavigate } from "./auth0-provider-with-navigate";
 import "./styles/styles.css";
+import { UserProvider } from './contexts/UserContext';
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -12,7 +13,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Auth0ProviderWithNavigate>
-        <App />
+        <UserProvider>
+          <App />
+        </UserProvider>
       </Auth0ProviderWithNavigate>
     </BrowserRouter>
   </React.StrictMode>
