@@ -1,71 +1,48 @@
-import React, { useEffect, useState } from "react";
-import {PageLayout} from "../components/PageLayout";
-
-const mockMovies = [
-  { id: 1, title: "The Shawshank Redemption", year: 1994 },
-  { id: 2, title: "The Godfather", year: 1972 },
-  { id: 3, title: "The Dark Knight", year: 2008 },
-];
+import React, { useState } from "react";
+import { PageLayout } from "../components/PageLayout";
+import { useNavigate } from "react-router-dom";
 
 export const SearchPage = () => {
-  const [movies, setMovies] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    let isMounted = true;
-    setTimeout(() => {
-      if (isMounted) {
-        setMovies(mockMovies);
-      }
-    }, 1000);
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  const handleMovieClick = (movie) => {
-    alert(`You clicked ${movie.title}`);
-  };
-
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-    gap: '20px',
-    padding: '20px'
-  };
-
-  const itemStyle = {
-    cursor: 'pointer',
-    border: '1px solid #ccc',
-    padding: '10px',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-    transition: 'transform 0.2s'
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.match(/^tt\d{7}$/)) {
+      navigate(`/movie/${searchTerm}`);
+    } else {
+      alert("Invalid search format. Please enter 'tt' followed by 7 digits.");
+    }
   };
 
   return (
     <PageLayout>
-      <div className="content-layout" id="movie-exploration" style={{ padding: '20px' }}>
-        <h1 id="page-title" className="content__title">Search Movies</h1>
-        <input
-          type="text"
-          placeholder="Search by title..."
-          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-          style={{ width: '100%', padding: '10px', marginBottom: '20px' }}
-        />
-        <div className="content__body">
-          <div style={gridStyle}>
-            {movies.filter(movie => movie.title.toLowerCase().includes(searchTerm)).map((movie) => (
-              <div
-                key={movie.id}
-                style={itemStyle}
-                onClick={() => handleMovieClick(movie)}
-              >
-                <h3>{movie.title}</h3>
-                <p>{movie.year}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div
+        className="content-layout"
+        id="movie-exploration"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          padding: "20px",
+        }}
+      >
+        <h1 id="page-title" className="content__title">
+          Search Movies
+        </h1>
+        <form onSubmit={handleSearch} style={{ width: "100%", maxWidth: "500px" }}>
+          <input
+            type="text"
+            placeholder="Search by title (e.g., tt1234567)..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            pattern="^tt\d{7}$"
+            title="Please enter 'tt' followed by 7 digits"
+            style={{ width: "100%", padding: "10px", marginBottom: "20px" }}
+          />
+        </form>
       </div>
     </PageLayout>
   );
