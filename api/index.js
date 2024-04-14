@@ -127,6 +127,65 @@ app.put("/users/:id", requireAuth, async (req, res) => {
   }
 });
 
+app.post('/favorites', requireAuth, async (req, res) => {
+  const { userId, movieId } = req.body;
+
+  try {
+    const existingFavorite = await prisma.favorite.findUnique({
+      where: { userId_movieId: { userId, movieId } },
+    });
+
+    if (existingFavorite) {
+      res.status(409).json({ error: 'Movie already favorited by this user' });
+      return;
+    }
+
+    const favorite = await prisma.favorite.create({
+      data: {
+        userId,
+        movieId,
+      },
+    });
+
+    res.json(favorite);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while favoriting the movie' });
+  }
+});
+
+app.get('/favorites', requireAuth, async (req, res) => {
+  const { userId } = req.body;
+  console.log(userId)
+
+  try {
+    const favorites = await prisma.favorite.findMany({
+      where: { userId },
+      include: { movie: true },
+    });
+
+    res.json(favorites.map(favorite => favorite.movie));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching favorites' });
+  }
+});
+
+app.delete('/favorites', requireAuth, async (req, res) => {
+  const { userId, movieId } = req.body;
+
+  try {
+    const deleteResponse = await prisma.favorite.delete({
+      where: { userId_movieId: { userId, movieId } },
+    });
+
+    res.json({ message: 'Favorite removed' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while removing the favorite' });
+  }
+});
+
 
 app.listen(8000, () => {
   console.log("Server running on http://localhost:8000 🎉 🚀");
