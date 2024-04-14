@@ -67,6 +67,52 @@ app.get('/detail/:movieId', async (req, res) => {
   }
 });
 
+app.get('/movies', async (req, res) => {
+  const page = req.query.page || '1';
+  const options = {
+    method: 'GET',
+    url: `https://moviesdatabase.p.rapidapi.com/titles`,
+    headers: {
+      'X-RapidAPI-Key': 'a2243b4875msha2e1ea67bcd72ecp18279ejsn4e35862a83e9',
+      'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+    },
+    params: {
+      page: page,
+      info: 'base_info'
+    }
+  };
+
+  try {
+    const response = await axios.request(options);
+    const moviesData = response.data.results;
+
+    if (moviesData.length > 0) {
+      for (const movieData of moviesData) {
+        const existingMovie = await prisma.movie.findUnique({
+          where: { movieId: movieData.id }
+        });
+
+        if (!existingMovie) {
+          await prisma.movie.create({
+            data: {
+              movieId: movieData.id,
+              title: movieData.titleText.text,
+              originalTitle: movieData.originalTitleText.text,
+              releaseYear: movieData.releaseYear.year,
+              // Assume releaseDate is properly defined in movieData
+              primaryImage: movieData.primaryImage?.url || null
+            }
+          });
+        }
+      }
+    }
+
+    res.json(moviesData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching movies data' });
+  }
+});
 
 const { User } = prisma;
 

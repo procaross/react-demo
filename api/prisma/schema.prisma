@@ -25,9 +25,9 @@ model Movie {
   movieId       String     @unique
   title         String
   originalTitle String
-  releaseYear   Int
-  releaseDate   DateTime
-  primaryImage  String
+  releaseYear   Int?
+  releaseDate   DateTime?
+  primaryImage  String?
   favorites     Favorite[]
 }
 
