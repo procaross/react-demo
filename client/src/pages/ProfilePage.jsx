@@ -13,7 +13,7 @@ export const ProfilePage = () => {
       const accessToken = await getAccessTokenSilently();
 
       try {
-        const response = await fetch("http://localhost:8000/users/auth", {
+        const response = await fetch(`http://localhost:8000/users/auth`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -74,57 +74,56 @@ export const ProfilePage = () => {
   return (
     <PageLayout>
       <div className="content-layout">
-        <h1 id="page-title" className="content__title">
-          Profile
-        </h1>
+        <h1 id="page-title" className="content__title">Profile</h1>
         <div className="content__body">
           <div className="profile-grid">
             <div className="profile__header">
-              <img
-                src={user.picture}
-                alt="Profile"
-                className="profile__avatar"
-              />
+              <img src={user.picture} alt="Profile" className="profile__avatar" />
               <div className="profile__headline">
                 <h2 className="profile__title">{user.name}</h2>
                 <span className="profile__description">{user.email}</span>
               </div>
             </div>
             <div className="profile__details">
-              <p>Given Name: {userData.givenName}</p>
-              <p>Family Name: {userData.familyName}</p>
-              <p>Nickname: {userData.nickname}</p>
-              <p>Locale: {userData.locale}</p>
-              <p>Email Verified: {userData.emailVerified ? "Yes" : "No"}</p>
-              <p>Updated At: {new Date(userData.updatedAt).toLocaleString()}</p>
-              <p>Sub: {userData.sub}</p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const updatedInfo = {
+                    givenName: e.target.givenName.value,
+                    familyName: e.target.familyName.value,
+                    nickname: e.target.nickname.value,
+                  };
+                  updateUserInfo(updatedInfo);
+                }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '20px'
+                }}
+              >
+                <label>
+                  Given Name:
+                  <input type="text" name="givenName" defaultValue={userData.givenName}/>
+                </label>
+                <label>
+                  Family Name:
+                  <input type="text" name="familyName" defaultValue={userData.familyName}/>
+                </label>
+                <label>
+                  Nickname:
+                  <input type="text" name="nickname" defaultValue={userData.nickname}/>
+                </label>
+                <p>Locale: {userData.locale}</p>
+                <p>Email Verified: {userData.emailVerified ? "Yes" : "No"}</p>
+                <p>Updated At: {new Date(userData.updatedAt).toLocaleString()}</p>
+                <p>Sub: {userData.sub}</p>
+                <button type="submit">Update</button>
+              </form>
+
             </div>
           </div>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const updatedInfo = {
-                givenName: e.target.givenName.value,
-                familyName: e.target.familyName.value,
-                nickname: e.target.nickname.value,
-              };
-              updateUserInfo(updatedInfo);
-            }}
-          >
-            <input
-              type="text"
-              name="givenName"
-              defaultValue={userData.givenName}
-            />
-            <input
-              type="text"
-              name="familyName"
-              defaultValue={userData.familyName}
-            />
-            <input type="text" name="nickname" defaultValue={userData.nickname} />
-            <button type="submit">Update</button>
-          </form>
+
         </div>
       </div>
     </PageLayout>
