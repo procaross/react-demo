@@ -8,6 +8,7 @@ import { HomePage } from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SearchPage } from "./pages/SearchPage";
+import DetailsPage from "./pages/DetailsPage";
 
 export const App = () => {
   const { isLoading } = useAuth0();
@@ -29,6 +30,7 @@ export const App = () => {
       />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/callback" element={<CallbackPage />} />
+      <Route path="/movie/:movieId" element={<DetailsPage/>}></Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
