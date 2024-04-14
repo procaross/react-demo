@@ -18,14 +18,6 @@ export const HeroBanner = () => {
         Discover the latest movies, classic hits, and experience an
         unforgettable journey into the magic of film with <strong>Cinema World</strong>.
       </p>
-
-      <button
-        id="explore-movies-button"
-        className="button button--primary"
-        onClick={handleScrollToContent}
-      >
-        Explore Movies &#8595;
-      </button>
     </div>
   );
 };
