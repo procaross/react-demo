@@ -157,7 +157,7 @@ app.post("/users/auth", async (req, res) => {
 
 app.put("/users/:id", requireAuth, async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const { givenName, familyName, nickname } = req.body;
     const updatedUser = await User.update({
       where: { id },
@@ -174,8 +174,8 @@ app.put("/users/:id", requireAuth, async (req, res) => {
 });
 
 app.post('/favorites', requireAuth, async (req, res) => {
-  const { userId, movieId } = req.body;
-
+  const { movieId } = req.body;
+  const userId = parseInt(req.body.userId, 10);
   try {
     const existingFavorite = await prisma.favorite.findUnique({
       where: { userId_movieId: { userId, movieId } },
@@ -201,7 +201,7 @@ app.post('/favorites', requireAuth, async (req, res) => {
 });
 
 app.get('/favorites', requireAuth, async (req, res) => {
-  const { userId } = req.body;
+  const userId = parseInt(req.body.userId, 10);
   console.log(userId)
 
   try {
@@ -218,8 +218,8 @@ app.get('/favorites', requireAuth, async (req, res) => {
 });
 
 app.delete('/favorites', requireAuth, async (req, res) => {
-  const { userId, movieId } = req.body;
-
+  const { movieId } = req.body;
+  const userId = parseInt(req.body.userId, 10);
   try {
     const deleteResponse = await prisma.favorite.delete({
       where: { userId_movieId: { userId, movieId } },
@@ -233,7 +233,7 @@ app.delete('/favorites', requireAuth, async (req, res) => {
 });
 
 app.get('/isFavorite', requireAuth, async (req, res) => {
-  const userId = req.query.userId;
+  const userId = parseInt(req.query.userId, 10);
   const movieId = req.query.movieId;
 
   if (!userId || !movieId) {
