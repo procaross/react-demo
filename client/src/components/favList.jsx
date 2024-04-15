@@ -12,12 +12,12 @@ const FavList = () => {
       if (userData && userData.id) {
         setLoading(true);
         try {
-          const response = await fetch('http://localhost:8000/favorites', {
+          const response = await fetch(`http://localhost:8000/favorites?userId=${userData.id}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${userData.accessToken}`
-            },
+            }
           });
 
           if (!response.ok) {

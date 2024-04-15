@@ -201,8 +201,7 @@ app.post('/favorites', requireAuth, async (req, res) => {
 });
 
 app.get('/favorites', requireAuth, async (req, res) => {
-  const userId = parseInt(req.body.userId, 10);
-  console.log(userId)
+  const userId = parseInt(req.query.userId, 10);
 
   try {
     const favorites = await prisma.favorite.findMany({
