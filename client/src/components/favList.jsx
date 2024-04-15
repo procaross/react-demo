@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { useUser } from '../contexts/UserContext';
 import FavoriteButton from "./FavButton";
+import { FavoritesContext } from "../contexts/FavoritesContext";
 
 const FavList = () => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { favListUpdated } = useContext(FavoritesContext);
   const { userData } = useUser();
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const FavList = () => {
     };
 
     fetchFavorites();
-  }, [userData]);
+  }, [userData, favListUpdated]);
 
   const gridStyle = {
     display: 'grid',

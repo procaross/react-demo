@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useUser } from '../contexts/UserContext';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { FavoritesContext } from "../contexts/FavoritesContext";
 
 const FavoriteButton = ({ movieId }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { userData } = useUser();
-
+  const { handleFavoritesUpdate } = useContext(FavoritesContext);
   useEffect(() => {
     const checkFavoriteStatus = async () => {
       if (userData && userData.id) {
@@ -50,6 +51,7 @@ const FavoriteButton = ({ movieId }) => {
 
     if (response.ok) {
       setIsFavorite(!isFavorite);
+      handleFavoritesUpdate();
     } else {
       console.error('Failed to update favorite status');
     }
