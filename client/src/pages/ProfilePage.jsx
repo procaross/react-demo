@@ -1,11 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../components/PageLayout";
+import {useUser} from "../contexts/UserContext";
+import FavList from "../components/favList";
 
 export const ProfilePage = () => {
   const { user, getAccessTokenSilently } = useAuth0();
-  const [userData, setUserData] = useState(null);
-
+  const { userData, setUserData } = useUser();
   useEffect(() => {
     let isMounted = true;
 
@@ -29,7 +30,7 @@ export const ProfilePage = () => {
         const data = await response.json();
 
         if (isMounted) {
-          setUserData(data);
+          setUserData({accessToken, ...data});
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -73,6 +74,7 @@ export const ProfilePage = () => {
 
   return (
     <PageLayout>
+      <FavList/>
       <div className="content-layout">
         <h1 id="page-title" className="content__title">Profile</h1>
         <div className="content__body">
@@ -113,10 +115,9 @@ export const ProfilePage = () => {
                   Nickname:
                   <input type="text" name="nickname" defaultValue={userData.nickname}/>
                 </label>
-                <p>Locale: {userData.locale}</p>
                 <p>Email Verified: {userData.emailVerified ? "Yes" : "No"}</p>
                 <p>Updated At: {new Date(userData.updatedAt).toLocaleString()}</p>
-                <p>Sub: {userData.sub}</p>
+                <p>auth0 access token: {userData.accessToken}</p>
                 <button type="submit">Update</button>
               </form>
 
