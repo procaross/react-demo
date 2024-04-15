@@ -62,7 +62,7 @@ export const ProfilePage = () => {
       }
 
       const updatedUserData = await response.json();
-      setUserData(updatedUserData);
+      setUserData({accessToken, ...updatedUserData});
     } catch (error) {
       console.error("Error updating user data:", error);
     }
