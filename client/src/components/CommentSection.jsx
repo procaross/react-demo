@@ -144,7 +144,7 @@ const CommentSection = ({ movieId }) => {
                 aria-label="delete"
                 onClick={() => handleDeleteComment(comment.id)}
               >
-                <DeleteIcon />
+                <DeleteIcon style={{ color: 'white' }}/>
               </IconButton>
             )}
           </ListItem>
