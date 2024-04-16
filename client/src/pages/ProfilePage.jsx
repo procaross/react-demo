@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../components/PageLayout";
 import {useUser} from "../contexts/UserContext";
-import FavList from "../components/favList";
+import FavList from "../components/FavList";
 
 export const ProfilePage = () => {
   const { user, getAccessTokenSilently } = useAuth0();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import FavButton from "../components/FavButton";
-import FavList from "../components/favList";
+import FavList from "../components/FavList";
 
 export const PublicPage = () => {
   const [movies, setMovies] = useState([]);
