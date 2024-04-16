@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 
 const UserContext = createContext(null);
@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const { user, getAccessTokenSilently } = useAuth0();
 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       const accessToken = await getAccessTokenSilently();
       const response = await fetch(`http://localhost:8000/users/auth`, {
@@ -30,13 +30,13 @@ export const UserProvider = ({ children }) => {
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  };
+  }, [user, getAccessTokenSilently]);
 
   useEffect(() => {
     if (user) {
       fetchUserData();
     }
-  }, [user, getAccessTokenSilently, fetchUserData]);
+  }, [user, fetchUserData]);
 
   const value = {
     userData,

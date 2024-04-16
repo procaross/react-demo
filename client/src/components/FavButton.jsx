@@ -1,14 +1,17 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { FavoritesContext } from "../contexts/FavoritesContext";
+import { useAuth0 } from "@auth0/auth0-react";
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { FavoritesContext } from "../contexts/FavoritesContext";
 
 const FavoriteButton = ({ movieId }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { userData } = useUser();
   const { handleFavoritesUpdate } = useContext(FavoritesContext);
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
+
   useEffect(() => {
     const checkFavoriteStatus = async () => {
       if (userData && userData.id) {
@@ -17,29 +20,30 @@ const FavoriteButton = ({ movieId }) => {
             'Authorization': `Bearer ${userData.accessToken}`,
           },
         });
-
-        const data = await response.json();
-
         if (response.ok) {
+          const data = await response.json();
           setIsFavorite(data.isFavorite);
         } else {
           console.error('Failed to fetch favorite status');
         }
       }
     };
-
     checkFavoriteStatus();
-  }, [userData, movieId]);
+  }, [movieId]);
 
   const handleFavoriteToggle = async () => {
+    if (!isAuthenticated) {
+      loginWithRedirect();
+      return;
+    }
+
     if (!userData || !userData.id) {
       console.error('User data is not available');
       return;
     }
 
     const method = isFavorite ? 'DELETE' : 'POST';
-    const url = `http://localhost:8000/favorites`;
-
+    const url = 'http://localhost:8000/favorites';
     const response = await fetch(url, {
       method: method,
       headers: {
