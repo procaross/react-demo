@@ -32,7 +32,7 @@ const CommentedMovieList = () => {
     };
 
     fetchCommentedMovies();
-  }, [userData]);
+  }, []);
 
   const gridStyle = {
     display: 'grid',

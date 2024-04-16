@@ -8,42 +8,6 @@ import CommentedMovieList from "../components/CommentedMovieList";
 export const ProfilePage = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const { userData, setUserData } = useUser();
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchUserData = async () => {
-      const accessToken = await getAccessTokenSilently();
-
-      try {
-        const response = await fetch(`http://localhost:8000/users/auth`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify(user),
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-
-        if (isMounted) {
-          setUserData({accessToken, ...data});
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [getAccessTokenSilently, user]);
 
   const updateUserInfo = async (updatedInfo) => {
     const accessToken = await getAccessTokenSilently();

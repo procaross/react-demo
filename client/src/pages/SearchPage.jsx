@@ -31,8 +31,11 @@ export const SearchPage = () => {
           throw new Error('Failed to fetch movies');
         }
         const data = await response.json();
-        console.log(data)
-        setMovies(prevMovies => [...prevMovies, ...data]);
+        setMovies(prevMovies => {
+          const existingIds = new Set(prevMovies.map(movie => movie.id));
+          const uniqueMovies = data.filter(movie => !existingIds.has(movie.id));
+          return [...prevMovies, ...uniqueMovies];
+        });
         setHasMore(data.length > 0);
         setLoading(false);
       } catch (error) {

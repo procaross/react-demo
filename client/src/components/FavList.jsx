@@ -37,7 +37,7 @@ const FavList = () => {
     };
 
     fetchFavorites();
-  }, [userData, favListUpdated]);
+  }, [favListUpdated]);
 
   const gridStyle = {
     display: 'grid',
