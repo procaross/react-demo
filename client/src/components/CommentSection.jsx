@@ -74,6 +74,7 @@ const CommentSection = ({ movieId }) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userData.accessToken}`,
         },
+        body: JSON.stringify({ userId: userData.id }),
       });
 
       if (response.ok) {
