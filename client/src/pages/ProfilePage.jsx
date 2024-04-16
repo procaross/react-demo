@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { PageLayout } from "../components/PageLayout";
 import {useUser} from "../contexts/UserContext";
 import FavList from "../components/FavList";
+import CommentedMovieList from "../components/CommentedMovieList";
 
 export const ProfilePage = () => {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -74,6 +75,7 @@ export const ProfilePage = () => {
 
   return (
     <PageLayout>
+      <CommentedMovieList/>
       <FavList/>
       <div className="content-layout">
         <h1 id="page-title" className="content__title">Profile</h1>
