@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import { useUser } from '../contexts/UserContext';
 import FavoriteButton from "./FavButton";
 import { FavoritesContext } from "../contexts/FavoritesContext";
+import {Link} from "react-router-dom";
 
 const FavList = () => {
   const [favorites, setFavorites] = useState([]);
@@ -67,7 +68,7 @@ const FavList = () => {
         <div style={gridStyle}>
           {favorites.map(movie => (
             <div key={movie.id} style={itemStyle}>
-              <a href={`/movie/${movie.movieId}`} key={movie.id} style={{textDecoration: 'none', color: 'inherit'}}>
+              <Link to={`/movie/${movie.movieId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <h3 style={{color: 'white'}}>{movie.title}</h3>
                 <p style={{color: 'white'}}>{movie.releaseYear}</p>
                 {movie.primaryImage && (
@@ -77,7 +78,7 @@ const FavList = () => {
                     style={{width: '100%', height: 'auto'}}
                   />
                 )}
-              </a>
+              </Link>
               <FavoriteButton movieId={movie.movieId} onClick={(e) => e.stopPropagation()}/>
             </div>
             ))}

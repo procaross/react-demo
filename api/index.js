@@ -310,7 +310,7 @@ app.post('/movies/:movieId/comments', async (req, res) => {
 
   try {
     const movie = await prisma.movie.findUnique({
-      where: { id: parseInt(movieId) },
+      where: { movieId: movieId },
     });
 
     if (!movie) {
@@ -337,7 +337,7 @@ app.get('/movies/:movieId/comments', async (req, res) => {
 
   try {
     const movie = await prisma.movie.findUnique({
-      where: { id: parseInt(movieId) },
+      where: { movieId: movieId },
       include: {
         comments: {
           include: {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import FavButton from "../components/FavButton";
 import FavList from "../components/FavList";
+import {Link} from "react-router-dom";
 
 export const PublicPage = () => {
   const [movies, setMovies] = useState([]);
@@ -67,7 +68,7 @@ export const PublicPage = () => {
       <div style={gridStyle}>
         {movies.map((movie, index) => (
           <div style={itemStyle} ref={index === movies.length - 1 ? lastMovieElementRef : null}>
-            <a href={`/movie/${movie.id}`} key={movie._id} style={{textDecoration: 'none', color: 'inherit'}}>
+            <Link to={`/movie/${movie.movieId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <h3 style={{color: 'white'}}>{movie.titleText.text}</h3>
               <p style={{color: 'white'}}>{movie.releaseYear.year}</p>
               {movie.primaryImage && (
@@ -77,7 +78,7 @@ export const PublicPage = () => {
                   style={{width: '100%', height: 'auto'}}
                 />
               )}
-            </a>
+            </Link>
             <FavButton movieId={movie.id} onClick={(e) => e.stopPropagation()}/>
           </div>
 

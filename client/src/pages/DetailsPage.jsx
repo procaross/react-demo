@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {PageLayout} from "../components/PageLayout";
+import CommentSection from "../components/CommentSection";
 
 const DetailsPage = () => {
   const { movieId } = useParams();
@@ -46,6 +47,7 @@ const DetailsPage = () => {
         ) : (
           <p style={{ color: "white", textAlign: "center" }}>Loading movie details...</p>
         )}
+        <CommentSection movieId={movieId}/>
       </div>
     </PageLayout>
   );
