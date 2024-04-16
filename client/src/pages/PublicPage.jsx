@@ -30,7 +30,11 @@ export const PublicPage = () => {
           throw new Error('Failed to fetch movies');
         }
         const data = await response.json();
-        setMovies(prevMovies => [...prevMovies, ...data]);
+        setMovies(prevMovies => {
+          const existingIds = new Set(prevMovies.map(movie => movie.id));
+          const uniqueMovies = data.filter(movie => !existingIds.has(movie.id));
+          return [...prevMovies, ...uniqueMovies];
+        });
         setHasMore(data.length > 0);
         setLoading(false);
       } catch (error) {
@@ -67,8 +71,8 @@ export const PublicPage = () => {
       <h1 style={{color: 'white'}}>Movie List</h1>
       <div style={gridStyle}>
         {movies.map((movie, index) => (
-          <div style={itemStyle} ref={index === movies.length - 1 ? lastMovieElementRef : null}>
-            <Link to={`/movie/${movie.movieId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <div style={itemStyle} ref={index === movies.length - 1 ? lastMovieElementRef : null} key={`pb${movie.id}`}>
+            <Link to={`/movie/${movie.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <h3 style={{color: 'white'}}>{movie.titleText.text}</h3>
               <p style={{color: 'white'}}>{movie.releaseYear.year}</p>
               {movie.primaryImage && (
