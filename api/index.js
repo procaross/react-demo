@@ -120,13 +120,15 @@ app.get('/search/movies', async (req, res) => {
 
   const options = {
     method: 'GET',
-    url: `https://moviesdatabase.p.rapidapi.com/titles/search/keyword/${keyword}`,
+    url: `https://moviesdatabase.p.rapidapi.com/titles/search/title/${keyword}`,
     headers: {
       'X-RapidAPI-Key': 'a2243b4875msha2e1ea67bcd72ecp18279ejsn4e35862a83e9',
       'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
     },
     params: {
-      page: page
+      page: page,
+      limit: '30',
+      exact: 'false',
     }
   };
 
@@ -146,7 +148,7 @@ app.get('/search/movies', async (req, res) => {
               movieId: movieData.id,
               title: movieData.titleText.text,
               originalTitle: movieData.originalTitleText.text,
-              releaseYear: movieData.releaseYear.year,
+              releaseYear: movieData.releaseYear?.year,
               primaryImage: movieData.primaryImage?.url || null
             }
           });
@@ -389,7 +391,6 @@ app.delete('/comments/:commentId', async (req, res) => {
     if (!comment) {
       return res.status(404).json({ error: 'Comment not found' });
     }
-
     if (comment.userId !== userId) {
       return res.status(403).json({ error: 'You are not authorized to delete this comment' });
     }
