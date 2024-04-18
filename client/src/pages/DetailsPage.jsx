@@ -25,15 +25,15 @@ const DetailsPage = () => {
 
   return (
     <PageLayout>
-      <div style={{ color: "white", textAlign: "center" }}>
-        <h1 style={{ color: "white", textAlign: "center" }}>Movie Details</h1>
+      <div style={{ textAlign: "center" }}>
+        <h1 style={{ textAlign: "center" }}>Movie Details</h1>
         {movieDetails ? (
           <div>
-            <h2 style={{ color: "white", textAlign: "center" }}>{movieDetails.title}</h2>
+            <h2 style={{ textAlign: "center" }}>{movieDetails.title}</h2>
             {movieDetails.originalTitle && (
-              <h3 style={{ color: "white", textAlign: "center" }}>Original Title: {movieDetails.originalTitle}</h3>
+              <h3 style={{ textAlign: "center" }}>Original Title: {movieDetails.originalTitle}</h3>
             )}
-            <p style={{ color: "white", textAlign: "center" }}>Release Year: {movieDetails.releaseYear}</p>
+            <p style={{ textAlign: "center" }}>Release Year: {movieDetails.releaseYear}</p>
             {movieDetails.primaryImage && (
               <img
                 src={movieDetails.primaryImage}
@@ -41,11 +41,11 @@ const DetailsPage = () => {
               />
             )}
             {movieDetails.releaseDate && (
-              <p style={{ color: "white", textAlign: "center" }}>Release Date: {new Date(movieDetails.releaseDate).toLocaleDateString()}</p>
+              <p style={{ textAlign: "center" }}>Release Date: {new Date(movieDetails.releaseDate).toLocaleDateString()}</p>
             )}
           </div>
         ) : (
-          <p style={{ color: "white", textAlign: "center" }}>Loading movie details...</p>
+          <p style={{ textAlign: "center" }}>Loading movie details...</p>
         )}
         <CommentSection movieId={movieId}/>
       </div>

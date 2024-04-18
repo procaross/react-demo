@@ -89,11 +89,7 @@ const CommentSection = ({ movieId }) => {
 
   return (
     <div>
-      <Typography variant="h3" gutterBottom sx={{mt: 10}}>
-        Comments
-      </Typography>
       <TextField
-        label="Write a comment..."
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
         variant="outlined"
@@ -101,25 +97,13 @@ const CommentSection = ({ movieId }) => {
         multiline
         rows={4}
         sx={{
-          mt: 2,
-          '& .MuiInputLabel-root': { color: 'white' },
-          '& .MuiInput-underline:before': { borderBottomColor: 'white' },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': { borderColor: 'white' },
-            '&:hover fieldset': { borderColor: 'white' },
-            '&.Mui-focused fieldset': { borderColor: 'white' },
-            '& .MuiInputBase-input': {
-              color: 'white',
-            },
-          }
+          mt: 10,
         }}
       />
       <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCommentSubmit}
-        disabled={!newComment.trim()}
-        sx={{ mt: 2, mb: 2 }}
+              onClick={handleCommentSubmit}
+              disabled={!newComment.trim()}
+              sx={{color: 'black', fontWeight: 'bold', fontSize: '20px', mt: 2, mb: 2, width: '100%'}}
       >
         Submit
       </Button>
@@ -133,7 +117,7 @@ const CommentSection = ({ movieId }) => {
               primary={comment.user.nickname || 'Anonymous'}
               secondary={
                 <React.Fragment>
-                  <Typography component="span" variant="body2">
+                  <Typography component="span" sx={{fontSize: '20px'}}>
                     {comment.content}
                   </Typography>
                 </React.Fragment>
