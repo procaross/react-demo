@@ -5,6 +5,13 @@ import {useUser} from "../contexts/UserContext";
 import FavList from "../components/FavList";
 import CommentedMovieList from "../components/CommentedMovieList";
 
+const ellipsisAccessToken = {
+  overflow: 'hidden',
+  wordBreak: 'break-all',
+  maxWidth: '400px',
+  cursor: 'pointer'
+};
+
 export const ProfilePage = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const { userData, setUserData } = useUser();
@@ -83,7 +90,8 @@ export const ProfilePage = () => {
                 </label>
                 <p>Email Verified: {userData.emailVerified ? "Yes" : "No"}</p>
                 <p>Updated At: {new Date(userData.updatedAt).toLocaleString()}</p>
-                <p>auth0 access token: {userData.accessToken}</p>
+                <p style={ellipsisAccessToken}>auth0 access token: <span
+                  title={userData.accessToken}>{userData.accessToken}</span></p>
                 <button type="submit">Update</button>
               </form>
 

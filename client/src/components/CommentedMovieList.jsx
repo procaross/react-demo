@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../contexts/UserContext';
 import { Link } from 'react-router-dom';
+import FavoriteButton from "./FavButton";
 
 const CommentedMovieList = () => {
   const [commentedMovies, setCommentedMovies] = useState([]);
@@ -74,6 +75,7 @@ const CommentedMovieList = () => {
                   />
                 )}
               </Link>
+              <FavoriteButton movieId={movie.movieId} onClick={(e) => e.stopPropagation()} />
             </div>
           ))}
         </div>
