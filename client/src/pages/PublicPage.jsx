@@ -58,7 +58,7 @@ export const PublicPage = () => {
     alignItems: 'center',
     flexDirection: 'column',
     cursor: 'pointer',
-    border: '1px solid #555',
+    border: '1px solid #FFCCCC',
     borderRadius: '0.8rem',
     padding: '20px',
     boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
@@ -66,15 +66,16 @@ export const PublicPage = () => {
   };
 
   return (
+    <>
+    <FavList />
     <div className="content-layout" style={{ padding: '20px' }}>
-      <FavList />
-      <h1 style={{color: 'white'}}>Movie List</h1>
+      <h1>Movie List</h1>
       <div style={gridStyle}>
         {movies.map((movie, index) => (
           <div style={itemStyle} ref={index === movies.length - 1 ? lastMovieElementRef : null} key={`pb${movie.id}`}>
             <Link to={`/movie/${movie.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <h3 style={{color: 'white'}}>{movie.titleText.text}</h3>
-              <p style={{color: 'white'}}>{movie.releaseYear.year}</p>
+              <h3>{movie.titleText.text}</h3>
+              <p style={{color: '#595959'}}>{movie.releaseYear.year}</p>
               {movie.primaryImage && (
                 <img
                   src={movie.primaryImage.url}
@@ -90,5 +91,6 @@ export const PublicPage = () => {
       </div>
       {loading && <p>Loading more movies...</p>}
     </div>
+    </>
   );
 };

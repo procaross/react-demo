@@ -4,6 +4,9 @@ import { PageLayout } from "../components/PageLayout";
 import {useUser} from "../contexts/UserContext";
 import FavList from "../components/FavList";
 import CommentedMovieList from "../components/CommentedMovieList";
+import {Button, Input} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 const ellipsisAccessToken = {
   overflow: 'hidden',
@@ -78,21 +81,24 @@ export const ProfilePage = () => {
               >
                 <label>
                   Given Name:
-                  <input type="text" name="givenName" defaultValue={userData.givenName}/>
+                  <Input type="text" name="givenName" defaultValue={userData.givenName} sx={{fontSize: '18px', ml: '10px'}}/>
                 </label>
                 <label>
                   Family Name:
-                  <input type="text" name="familyName" defaultValue={userData.familyName}/>
+                  <Input type="text" name="familyName" defaultValue={userData.familyName}  sx={{fontSize: '18px', ml: '10px'}}/>
                 </label>
                 <label>
                   Nickname:
-                  <input type="text" name="nickname" defaultValue={userData.nickname}/>
+                  <Input type="text" name="nickname" defaultValue={userData.nickname}  sx={{fontSize: '18px', ml: '10px'}}/>
                 </label>
                 <p>Email Verified: {userData.emailVerified ? "Yes" : "No"}</p>
                 <p>Updated At: {new Date(userData.updatedAt).toLocaleString()}</p>
                 <p style={ellipsisAccessToken}>auth0 access token: <span
                   title={userData.accessToken}>{userData.accessToken}</span></p>
-                <button type="submit">Update</button>
+                <Button type="submit" sx={{color: 'black', fontWeight: 'bold', fontSize: '20px'}}>
+                  <ArrowUpwardIcon sx={{mr: '10px', fontWeight: 'bold', fontSize: '20px'}}/>
+                  Submit
+                </Button>
               </form>
 
             </div>

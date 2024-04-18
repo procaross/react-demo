@@ -5,10 +5,10 @@
   flex-shrink: 0;
   width: 100%;
 
-  box-shadow: rgb(90 95 102) 0-1.5px 0 inset;
+  box-shadow: #FFCCCC 0-1.5px 0 inset;
 
   z-index: 300;
-  background-color: var(--black);
+  background-color: #FFCCCC;
 }
 
 .nav-bar {
@@ -83,7 +83,7 @@
 }
 
 .nav-bar__tab:hover {
-  color: var(--white);
+  color: #424242;
 }
 
 .nav-bar__icon {

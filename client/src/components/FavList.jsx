@@ -55,9 +55,9 @@ const FavList = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      {userData && <h1 style={{ color: 'white' }}>Your Favorites</h1>}
+      {userData && <h1>Your Favorites</h1>}
       {loading ? (
-        <p style={{ color: 'white' }}>Loading...</p>
+        <p style={{color: '#f5f5f5'}}>Loading...</p>
       ) : (
         <div style={gridStyle}>
           {favorites.map(movie => (
@@ -67,15 +67,15 @@ const FavList = () => {
               alignItems: 'center',
               flexDirection: 'column',
               cursor: 'pointer',
-              border: '1px solid #555',
+              border: '1px solid #FFCCCC',
               borderRadius: '0.8rem',
               padding: '20px',
               boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
               transition: 'transform 0.2s'
             }}>
               <Link to={`/movie/${movie.movieId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 style={{ color: 'white' }}>{movie.title}</h3>
-                <p style={{ color: 'white' }}>{movie.releaseYear}</p>
+                <h3>{movie.title}</h3>
+                <p>{movie.releaseYear}</p>
                 {movie.primaryImage && (
                   <img
                     src={movie.primaryImage}

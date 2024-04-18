@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Button } from "@mui/material";
+import {Button, Input} from "@mui/material";
 import { PageLayout } from "../components/PageLayout";
 import FavButton from "../components/FavButton";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from '@mui/icons-material/Search';
 
 export const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,8 +59,8 @@ export const SearchPage = () => {
     <PageLayout>
       <div className="content-layout" id="movie-exploration" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", padding: "20px" }}>
         <h1 id="page-title" className="content__title">Search Movies</h1>
-        <input type="text" placeholder="Search by title..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ width: "100%", padding: "10px", marginBottom: "20px" }} />
-        <Button variant="contained" color="primary" onClick={handleSearchClick} style={{ marginBottom: "20px" }}>Search</Button>
+        <Input type="text" placeholder="Search by title..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} sx={{fontSize: '20px', width:'70vw', mb:'2rem', px: '1rem'}}/>
+        <IconButton variant="contained" color="primary" onClick={handleSearchClick} style={{ marginBottom: "20px" }} sx={{fontSize: '50px'}}><SearchIcon sx={{color: 'black', fontSize: '30px'}}/></IconButton>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px', padding: '20px' }}>
           {movies.map((movie, index) => (
             <div key={movie._id} ref={index === movies.length - 1 ? lastMovieElementRef : null} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', cursor: 'pointer', border: '1px solid #555', borderRadius: '0.8rem', padding: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', transition: 'transform 0.2s' }}>

@@ -19,9 +19,9 @@ body {
 }
 
 body {
-  background-color: var(--black);
+  background-color: #FFCCCC;
 
-  color: var(--white);
+  color: var(--black);
   font-family: var(--font-primary);
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -120,7 +120,7 @@ textarea {
 }
 
 a {
-  color: var(--white);
+  color: var(--black);
   text-decoration: none;
 }
 
@@ -129,17 +129,6 @@ figure {
 }
 img {
   vertical-align: middle;
-}
-
-code,
-pre {
-  font-family: "Fira Code", source-code-pro, Menlo, Monaco, Consolas,
-    "Courier New", monospace;
-  width: 100%;
-}
-
-code {
-  color: var(--emerald);
 }
 
 #root {

@@ -48,7 +48,7 @@ const CommentedMovieList = () => {
     alignItems: 'center',
     flexDirection: 'column',
     cursor: 'pointer',
-    border: '1px solid #555',
+    border: '1px solid #FFCCCC',
     borderRadius: '0.8rem',
     padding: '20px',
     boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
@@ -57,16 +57,16 @@ const CommentedMovieList = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      {userData && <h1 style={{ color: 'white' }}>Movies You Commented On</h1>}
+      {userData && <h1>Movies You Commented On</h1>}
       {loading ? (
-        <p style={{ color: 'white' }}>Loading...</p>
+        <p>Loading...</p>
       ) : (
         <div style={gridStyle}>
           {commentedMovies.map(movie => (
             <div key={movie.id} style={itemStyle}>
               <Link to={`/movie/${movie.movieId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 style={{ color: 'white' }}>{movie.title}</h3>
-                <p style={{ color: 'white' }}>{movie.releaseYear}</p>
+                <h3>{movie.title}</h3>
+                <p>{movie.releaseYear}</p>
                 {movie.primaryImage && (
                   <img
                     src={movie.primaryImage}

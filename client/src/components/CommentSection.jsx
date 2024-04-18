@@ -88,8 +88,8 @@ const CommentSection = ({ movieId }) => {
   };
 
   return (
-    <div style={{ color: 'white' }}>
-      <Typography variant="h3" gutterBottom sx={{color: 'white', mt: 10}}>
+    <div>
+      <Typography variant="h3" gutterBottom sx={{mt: 10}}>
         Comments
       </Typography>
       <TextField
@@ -133,7 +133,7 @@ const CommentSection = ({ movieId }) => {
               primary={comment.user.nickname || 'Anonymous'}
               secondary={
                 <React.Fragment>
-                  <Typography component="span" variant="body2" sx={{ color: 'white' }}>
+                  <Typography component="span" variant="body2">
                     {comment.content}
                   </Typography>
                 </React.Fragment>
@@ -145,7 +145,7 @@ const CommentSection = ({ movieId }) => {
                 aria-label="delete"
                 onClick={() => handleDeleteComment(comment.id)}
               >
-                <DeleteIcon style={{ color: 'white' }}/>
+                <DeleteIcon/>
               </IconButton>
             )}
           </ListItem>

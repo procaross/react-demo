@@ -15,7 +15,6 @@ export const HomePage = () => {
 
   return (
     <PageLayout>
-      <HeroBanner />
       <PublicPage />
     </PageLayout>
   )
