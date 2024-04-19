@@ -61,7 +61,7 @@ const CommentedMoviesList = () => {
 
   return (
     <div style={{ padding: '20px', position: 'relative' }}>
-      {userData && <h1>Movies Buzzing Now</h1>}
+      <h1>Movies Buzzing Now</h1>
       {loading ? (
         <p style={{color: '#f5f5f5'}}>Loading...</p>
       ) : (
