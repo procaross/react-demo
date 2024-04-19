@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const FavList = () => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // 新增错误状态
+  const [error, setError] = useState(null);
   const { favListUpdated } = useContext(FavoritesContext);
   const { userData } = useUser();
 
@@ -55,7 +55,7 @@ const FavList = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      {userData && <h1>Your Favorites</h1>}
+      {userData && <h1>My Movie Favorites</h1>}
       {loading ? (
         <p style={{color: '#f5f5f5'}}>Loading...</p>
       ) : (

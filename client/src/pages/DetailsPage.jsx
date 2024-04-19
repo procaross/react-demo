@@ -38,6 +38,7 @@ const DetailsPage = () => {
               <img
                 src={movieDetails.primaryImage}
                 alt={`Cover for ${movieDetails.title}`}
+                style={{width: '100%', height: 'auto'}}
               />
             )}
             {movieDetails.releaseDate && (

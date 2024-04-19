@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { PageLayout } from "../components/PageLayout";
 import {useUser} from "../contexts/UserContext";
 import FavList from "../components/FavList";
-import CommentedMovieList from "../components/CommentedMovieList";
+import CommentedByUserMovieList from "../components/CommentedByUserMovieList";
 import {Button, Input} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -49,7 +49,7 @@ export const ProfilePage = () => {
 
   return (
     <PageLayout>
-      <CommentedMovieList/>
+      <CommentedByUserMovieList/>
       <FavList/>
       <div className="content-layout">
         <h1 id="page-title" className="content__title">Profile</h1>

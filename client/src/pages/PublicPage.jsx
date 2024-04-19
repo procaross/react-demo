@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import FavButton from "../components/FavButton";
 import FavList from "../components/FavList";
 import {Link} from "react-router-dom";
+import CommentedMovieList from "../components/CommentedMovieList";
 
 export const PublicPage = () => {
   const [movies, setMovies] = useState([]);
@@ -68,8 +69,9 @@ export const PublicPage = () => {
   return (
     <>
     <FavList />
+    <CommentedMovieList/>
     <div className="content-layout" style={{ padding: '20px' }}>
-      <h1>Movie List</h1>
+      <h1>All Movies</h1>
       <div style={gridStyle}>
         {movies.map((movie, index) => (
           <div style={itemStyle} ref={index === movies.length - 1 ? lastMovieElementRef : null} key={`pb${movie.id}`}>

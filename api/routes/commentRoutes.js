@@ -6,17 +6,59 @@ const prisma = new PrismaClient();
 
 router.get('/users/:userId/commented-movies', async (req, res) => {
   const { userId } = req.params;
-
   try {
-    const comments = await prisma.comment.findMany({
+    const commentedMovieIds = await prisma.comment.findMany({
       where: { userId: parseInt(userId) },
-      include: {
-        movie: true,
-      },
+      select: { movieId: true },
+      distinct: ['movieId']
     });
 
-    const commentedMovies = comments.map(comment => comment.movie);
-    res.json(commentedMovies);
+    const movies = await prisma.movie.findMany({
+      where: {
+        id: { in: commentedMovieIds.map(({ movieId }) => movieId) }
+      }
+    });
+
+    res.json(movies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching commented movies' });
+  }
+});
+
+router.get('/commented-movies', async (req, res) => {
+  const { page = 1, pageSize = 10 } = req.query;
+
+  try {
+    const movieIds = await prisma.comment.findMany({
+      select: {
+        movieId: true,
+      },
+      distinct: ['movieId'],
+    });
+
+    const totalMovies = movieIds.length;
+    const totalPages = Math.ceil(totalMovies / pageSize);
+
+    const movies = await prisma.movie.findMany({
+      where: {
+        id: {
+          in: movieIds.map(({ movieId }) => movieId),
+        },
+      },
+      skip: (page - 1) * pageSize,
+      take: parseInt(pageSize),
+    });
+
+    res.json({
+      movies,
+      pagination: {
+        currentPage: page,
+        pageSize,
+        totalPages,
+        totalMovies,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching commented movies' });
