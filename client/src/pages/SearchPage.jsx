@@ -65,8 +65,8 @@ export const SearchPage = () => {
           {movies.map((movie, index) => (
             <div key={movie._id} ref={index === movies.length - 1 ? lastMovieElementRef : null} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', cursor: 'pointer', border: '1px solid #555', borderRadius: '0.8rem', padding: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', transition: 'transform 0.2s' }}>
               <a href={`/movie/${movie.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <h3 style={{ color: 'white' }}>{movie.titleText.text}</h3>
-                <p style={{ color: 'white' }}>{movie.releaseYear?.year}</p>
+                <h3>{movie.titleText.text}</h3>
+                <p>{movie.releaseYear?.year}</p>
                 {movie.primaryImage && (
                   <img src={movie.primaryImage.url} alt={movie.primaryImage.caption.plainText} style={{ width: '100%', height: 'auto' }} />
                 )}
